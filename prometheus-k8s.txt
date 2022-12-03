@@ -1,0 +1,30 @@
+Pre-requsite java, build tool gradle preferably, IDE (IntelliJ), docker for desktop.
+
+1. Spring boot app -> spring initializer  -> have prometheus activated.
+
+2. Docker images out of it
+
+		gradle bootBuildImage --imageName=xyz/gs-spring-boot-docker
+
+3. Install minikube
+
+4. Deploy your image using helm
+
+		minikube image load <IMAGE_NAME>
+
+5. Helm chart for prometheus
+
+		helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+		helm install prometheus prometheus-community/prometheus
+
+		kubectl expose service prometheus-server --type=LoadBalancer --target-port=9090 --name=prometheus-server-lb
+
+6. Add your service to prometheus config map.
+
+		- job_name: demo-metrics
+			  static_configs:
+			  - targets:
+				- vsk-demo-demo-chart:9000
+				labels:
+				  __metrics_path__: /actuator/prometheus
