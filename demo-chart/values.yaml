@@ -1,0 +1,12 @@
+replicaCount: 1
+
+image:
+  repository: vishekkumar/demo-spring-boot-docker
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 8080
+  
+container:
+  name: vsk
